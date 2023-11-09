@@ -1,23 +1,28 @@
 # По аналогии с практикой из лекции создайте свой docker image с http сервером nginx. Замените страницу приветсвия Nginx на своё (измените текст приветствия на той же странице).
 # Подсказки:
-# В официальном образе nginx стандартный путь к статичным файлам `/usr/share/nginx/newhtml.html`.
-
+# В официальном образе nginx стандартный путь к статичным файлам `/usr/share/nginx/index.html`.
+#FROM nginx
+#
+#RUN rm /usr/share/nginx/html/index.html
+#ADD .\Docker\index.html /usr/share/nginx/html
+#
+#FROM nginx COPY ./index.html /usr/share/nginx/html CMD ["nginx", "-g", "daemon off;"]
 # На проверку присылается GitHub-репозиторий с Dockerfile и статичными файлами для него.
-
-FROM python:3.9
-# RUN apk add --no-catche gcc musl-dev linux-headers
-
-
-WORKDIR src
-COPY . /src
-#скопируй все из текущего каталога хоста в src (строка 6)
-RUN pip3 install --no-catche-dir --upgrade -r requerements.txt
-# Установи все зависимости не кешируй, обнови
-
-# env MY_ENV=netology_13_07
-
-# expose 6060
-CMD [ "python3","-u","main.py","--host","0.0.0.0","--port","6060" ]
+#
+#FROM python:3.9
+## RUN apk add --no-catche gcc musl-dev linux-headers
+#
+#
+#WORKDIR src
+#COPY . /src
+##скопируй все из текущего каталога хоста в src (строка 6)
+#RUN pip3 install --no-catche-dir --upgrade -r requerements.txt
+## Установи все зависимости не кешируй, обнови
+#
+## env MY_ENV=netology_13_07
+#
+## expose 6060
+#CMD [ "python3","-u","main.py","--host","0.0.0.0","--port","6060" ]
 #Запускаем docker image build . --tag=my_first_app
 
 #docker run -d -p 2000:80 -v C:\\Users\\mrpar\\Docker\\newhtml:/usr/share/nginx/html --name=rabotay_gospody_poszhalyista nginx
@@ -33,3 +38,21 @@ CMD [ "python3","-u","main.py","--host","0.0.0.0","--port","6060" ]
 #580aa648b00c   nginx     "/docker-entrypoint.…"   3 hours ago      Up 3 hours      80/tcp                 exciting_archimedes
 #e483d49ff41e   nginx     "/docker-entrypoint.…"   3 hours ago      Up 3 hours      80/tcp                 mystifying_mahavira
 
+# Use an official Python runtime as a parent image
+FROM python:3.9
+
+# Set the working directory to /app
+WORKDIR / C:\Users\mrpar\Docker
+
+# Copy the current directory contents into the container at /app
+ADD . / C:\Users\mrpar\Docker
+
+# Install any needed packages specified in requirements.txt
+# Using the --no-cache argument to prevent re-installing packages when changing dependencies
+RUN pip install --no-cache -r requirements.txt && rm requirements.txt
+
+# Define environment variable
+ENV NAME World
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
